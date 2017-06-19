@@ -1,0 +1,114 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+    background-color: linen;
+}
+
+td {
+    border-top-style: solid;
+}
+</style>
+</head>
+<body>
+
+<table style="width:100%">
+  <tr style="font-weight:bold; background-color: orange">
+    <td width="300px">Single-instance version cases</td>
+    <td>Graph Results Screenshot</td>
+    <td>Average Query Time(ms)</td>
+    <td>Average Search Servlet Time(ms)</td>
+    <td>Average JDBC Time(ms)</td>
+    <td>Analysis</td>
+  </tr>
+  <tr>
+    <td>Case 1: HTTP/1 thread</td>
+    <td><img src="HTTP1thread.png" alt="Graph Results Screenshot Case 1" style="width:304px;height:228px;"></td>
+    <td>83</td>
+    <td>2.04</td>
+    <td>1.75</td>
+    <td>This case takes an average of 83 milliseconds to run a query, an average of 2.04 milliseconds to go through the entire search servlet, and an average of 1.75 milliseconds for JDBC execution.</td>
+  </tr>
+  <tr>
+    <td>Case 2: HTTP/10 threads</td>
+    <td><img src="HTTP10threads.png" alt="Graph Results Screenshot Case 2" style="width:304px;height:228px;"></td>
+    <td>56</td>
+    <td>1.39</td>
+    <td>1.28</td>
+    <td>This case takes an average of 56 milliseconds to run a query, an average of 1.39 milliseconds to go through the entire search servlet, and an average of 1.28 milliseconds for JDBC execution. The average times could potentially be faster than 1 thread since a thread might run a little faster than another when running the search.</td>
+  </tr>
+  <tr>
+    <td>Case 3: HTTPS/10 threads</td>
+    <td><img src="HTTPS10threads.png" alt="Graph Results Screenshot Case 3" style="width:304px;height:228px;"></td>
+    <td>55</td>
+    <td>1.37</td>
+    <td>1.26</td>
+    <td>This case takes an average of 55 milliseconds to run a query, an average of 1.37 milliseconds to go through the entire search servlet, and an average of 1.26 milliseconds for JDBC execution. With 10 threads using HTTPS, it is pretty similar to HTTP.</td>
+  </tr>
+  <tr>
+    <td>Case 4: HTTP/10 threads/No prepared statements</td>
+    <td><img src="NO_PREPARED_STATEMENTS.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>57</td>
+    <td>3.69</td>
+    <td>3.01</td>
+    <td>This case takes an average of 57 milliseconds to run a query, an average of 3.69 milliseconds to go through the entire search servlet, and an average of 3.01 milliseconds for JDBC execution. Without prepared statements, the JDBC execution and search servlets require double time compared to when prepared statements are used.</td>
+  </tr>
+  <tr>
+    <td>Case 5: HTTP/10 threads/No connection pooling</td>
+    <td><img src="NO_CONNECTION_POOLING.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>66</td>
+    <td>8.28</td>
+    <td>7.56</td>
+    <td>This case takes an average of 66 milliseconds to run a query, an average of 8.28 milliseconds to go through the entire search servlet, and an average of 7.56 milliseconds for JDBC execution. It is clear that without connection pooling, the queries are all around are much slower since multiple connections cannot be handled as well all at once.</td>
+  </tr>
+
+</table> 
+
+
+<table style="width:100%">
+  <tr style="font-weight:bold; background-color: orange">
+    <td width="300px">Scaled version cases</td>
+    <td>Graph Results Screenshot</td>
+    <td>Average Query Time(ms)</td>
+    <td>Average Search Servlet Time(ms)</td>
+    <td>Average JDBC Time(ms)</td>
+    <td>Analysis</td>
+  </tr>
+  <tr>
+    <td>Case 1: HTTP/1 thread</td>
+    <td><img src="scaled1thread.png" alt="Graph Results Screenshot Case 1" style="width:304px;height:228px;"></td>
+    <td>58</td>
+    <td>2.19</td>
+    <td>1.52</td>
+    <td>This case takes an average of 58 milliseconds to run a query, an average of 2.19 milliseconds to go through the entire search servlet, and an average of 1.52 milliseconds for JDBC execution. With the scaled version, the average query time improved from 83 to 58, so it is much faster.</td>
+  </tr>
+  <tr>
+    <td>Case 2: HTTP/10 threads</td>
+    <td><img src="scaled10threads.png" alt="Graph Results Screenshot Case 2" style="width:304px;height:228px;"></td>
+    <td>60</td>
+    <td>2.89</td>
+    <td>1.53</td>
+    <td>This case takes an average of 60 milliseconds to run a query, an average of 2.89 milliseconds to go through the entire search servlet, and an average of 1.53 milliseconds for JDBC execution. Running 10 threads with the scaled version caused the search servlet time to double because the proxy slows down the connection between the client and server.</td>
+  </tr>
+  <tr>
+    <td>Case 3: HTTP/10 threads/No prepared statements</td>
+    <td><img src="scaled_no_prepared_statements.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>353</td>
+    <td>4.65</td>
+    <td>3.10</td>
+    <td>This case takes an average of 353 milliseconds to run a query, an average of 4.65 milliseconds to go through the entire search servlet, and an average of 3.10 milliseconds for JDBC execution. Without prepared statements for the scaled version, the queries are slower.</td>
+  </tr>
+  <tr>
+    <td>Case 4: HTTP/10 threads/No connection pooling</td>
+    <td><img src="scaled_no_connection_pooling.png" alt="Graph Results Screenshot Case 4" style="width:304px;height:228px;"></td>
+    <td>311</td>
+    <td>8.86</td>
+    <td>7.32</td>
+    <td>This case takes an average of 311 milliseconds to run a query, an average of 8.86 milliseconds to go through the entire search servlet, and an average of 7.32 milliseconds for JDBC execution. Without connection pooling, even with the scaled version it takes a while to run queries because it can't handle multiple connections efficiently. Also it must go through a proxy, so it takes even longer.</td>
+  </tr>
+
+</table> 
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+Project 5 Reports
+
+Task 1: Connection Pooling
+
+Under WebContent - META-INF, you can find a file called ‘context.xml’. This is the xml file that connects to the database and enables the datasource to allow connection pooling (this is the only place you will need to change your sql user and password for the program to connect to your own database). Once a datasource has been created in this file, other places in the program can access to this datasource instead, rather than to the database directly
+
+Without having to create multiple connections directly to the database, here are the following servlets that connect to the datasource:
+- LoginPageServlet.java
+- MoviedbUtil.java
+- CheckOutServlet.java
+- DashboardServlet.java
+
+
+
+Task 2: Scaling Fabflix
+
+How to use connection pooling with two backend servers:
+	In the case of having two backend servers already set up with load balancing, MySQL master/slave replication, and session support; connection pooling can be achieved by granting permissions to the MySQL users who will be accessing the moviedb database.
+	Assuming “root” has been created for localhost and with the % wildcard:
+		GRANT ALL ON *.* TO ‘root’@‘localhost';
+		GRANT ALL ON *.* TO ‘root’@‘%’;
+	This allows root to access remote MySQL servers, which is crucial for completing write requests to the database. With connection pooling, we can force any part of the program involved in writing to be directed to the master instance’s database. This is done within Context.xml. In the example below, 34.210.39.192 is the public IP of the master instance. Allowing access to all traffic going through the load balancer instance, master instance, and slave instance will ensure a proper connection.
+		url="jdbc:mysql://34.210.39.192:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
+	
+	Read requests within the program go to either the master or slave instance at random as follows with this url:
+        url="jdbc:mysql:loadbalance://34.210.39.192:3306,34.210.220.1:3306/moviedb?autoReconnect=true&amp;useSSL=false"
+
