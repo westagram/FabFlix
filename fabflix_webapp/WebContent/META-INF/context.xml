@@ -1,0 +1,17 @@
+<Context>
+
+	<Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
+		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="root"
+		password="171389628" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql:loadbalance://localhost:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
+
+<!-- 34.210.39.192:3306,34.210.220.1:3306 -->
+
+	<Resource name="jdbc/TestDBWrite" auth="Container" type="javax.sql.DataSource"
+		maxTotal="100" maxIdle="30" maxWaitMillis="10000" username="root"
+		password="171389628" driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;useSSL=false" />
+		
+<!-- 34.210.39.192:3306 -->
+
+</Context>
